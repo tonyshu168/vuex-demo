@@ -27,23 +27,56 @@
       <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
     </ul>
+    <div>
+      <span>store.state {{ count }}</span><br />
+    </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   name: 'HelloWorld',
   props: {
     msg: String,
     testFunc: Function
   },
+  data() {
+    return {
+      localCount: 4
+    }
+  },
   created() {
-    debugger;
+    // debugger;
     console.log('created');
     this.$emit('callback');
     // this.testFunc();
-  }
+  },
+  computed: mapState([
+    'count'
+  ])
 };
+
+
+// mapState({
+//     // count() {
+//     //   return this.$store.state.count;
+//     // }
+    
+//     count: state => state.count,
+//     countAlias: 'count',
+//     countPlusLocalState( state ) {
+//       return state.count + this.localCount;
+//     }
+//   })
+
+// computed: {
+//   doneTodosCount() {
+//     return this.$store.getters.doneTodosCount
+//   }
+// }
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
