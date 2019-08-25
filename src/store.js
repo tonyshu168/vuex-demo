@@ -25,16 +25,51 @@ const store = new Vuex.Store({
   mutations: {
     increment(state) {
       state.count++;
+    },
+    incrementBy(state, payload) {
+      state.count += payload.amount;
+    },
+    decrement(state) {
+      state.count--;
     }
   },
   actions: {
-
+    incrementAsync({ commit }) {
+      setTimeout(() => {
+        commit('increment');
+      }, 1000);
+    },
+    actionA({ commit }) {
+      return Promise((resolve, reject) => {
+        setTimeout(() => {
+          commit('someMutation');
+          resolve();
+        }, 1000);
+      });
+    },
+    actionB({ dispatch, commit }) {
+      return dispatch('actionA').then(() => {
+        commit('someOtherMutation');
+      });
+    },
+    async actionC({ commit }) {
+      commit('gotData', await getData());
+    },
+    async actionD({ commit }) {
+      awati dispatch('actionC');
+      commit('gotOtherData', await getOtherData());
+    }
   },
 });
 
 export default store;
 
 store.commit('increment');
+// store.commit('incrementBy', { amount: 29 });
+store.commit({
+  type: 'incrementBy',
+  amount: 40
+})
 console.log(store);
 console.log(store.state.count);
 console.log(store.getters.doneTodos);

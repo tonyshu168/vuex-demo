@@ -29,12 +29,15 @@
     </ul>
     <div>
       <span>store.state {{ count }}</span><br />
+      <button @click="increment">+</button>
+      <input type="button" value="-" @click="decrement"/>
+      <input type="button" value="incrementAsync" @click="incrementAsync"/>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters, mapMutations } from 'vuex';
 
 export default {
   name: 'HelloWorld',
@@ -55,7 +58,27 @@ export default {
   },
   computed: mapState([
     'count'
-  ])
+  ]),
+  methods: {
+    increment() {
+      this.$store.commit('increment');
+    },
+    incrementBy(payload) {
+      this.$store.commit('incrementBy', payload.amount);
+    },
+    decrement() {
+      this.$store.commit('decrement');
+    },
+    incrementAsync() {
+      this.$store.dispatch('incrementAsync');
+    },
+    testAction() {
+      this.$store.dispatch('actionA').then(() => {
+
+      });
+    }
+  }
+  // methods: mapMutations(['increment', 'incrementBy', 'decrement'])
 };
 
 
@@ -76,6 +99,10 @@ export default {
 //     return this.$store.getters.doneTodosCount
 //   }
 // }
+
+computed: mapGetters([
+  'doneTodos', 'doneTodosCount', 'getTodoById'
+])
 
 </script>
 
