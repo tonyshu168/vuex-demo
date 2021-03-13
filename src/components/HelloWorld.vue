@@ -29,15 +29,17 @@
     </ul>
     <div>
       <span>store.state {{ count }}</span><br />
+      <!--
       <button @click="increment">+</button>
       <input type="button" value="-" @click="decrement"/>
       <input type="button" value="incrementAsync" @click="incrementAsync"/>
+      -->
     </div>
   </div>
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations } from 'vuex';
+import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
 
 export default {
   name: 'HelloWorld',
@@ -56,29 +58,35 @@ export default {
     this.$emit('callback');
     // this.testFunc();
   },
-  computed: mapState([
-    'count'
-  ]),
-  methods: {
-    increment() {
-      this.$store.commit('increment');
-    },
-    incrementBy(payload) {
-      this.$store.commit('incrementBy', payload.amount);
-    },
-    decrement() {
-      this.$store.commit('decrement');
-    },
-    incrementAsync() {
-      this.$store.dispatch('incrementAsync');
-    },
-    testAction() {
-      this.$store.dispatch('actionA').then(() => {
+  computed: mapState({
+    count: state => state.count,
+    a: state => state.a.count,
+    b: state => state.count
+  }),
+  // methods: {
+  //   increment() {
+  //     this.$store.commit('increment');
+  //   },
+  //   incrementBy(payload) {
+  //     this.$store.commit('incrementBy', payload.amount);
+  //   },
+  //   decrement() {
+  //     this.$store.commit('decrement');
+  //   },
+  //   incrementAsync() {
+  //     this.$store.dispatch('incrementAsync');
+  //   },
+  //   testAction() {
+  //     this.$store.dispatch('actionA').then(() => {
 
-      });
-    }
-  }
+  //     });
+  //   }
+    
+  // }
   // methods: mapMutations(['increment', 'incrementBy', 'decrement'])
+  methods: mapActions('some/nested/module', [
+    'foo' // this.foo()
+  ])
 };
 
 
